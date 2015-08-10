@@ -1,15 +1,24 @@
 language: node_js
 
+sudo: required
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - build-essential
+    - gcc-5
+    - g++-5
+
 node_js:
   - "0.10"
   - "0.12"
   - "iojs"
 
 before_install:
-  - sudo apt-get install build-essential
-  - g++ --version
-  - export CXXFLAGS="-std=c++0x $CXXFLAGS"
-  - export CFLAGS="-std=c++0x $CFLAGS"
+  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
+  - sudo unlink /usr/bin/g++ && sudo ln -s /usr/bin/g++-5 /usr/bin/g++
 
 before_script:
   - if [ "`nvm current`" < "system" ]; then N=`which node`; D=`dirname $N`; ln -s $D/../lib/node_modules/npm/bin/node-gyp-bin/node-gyp; fi
